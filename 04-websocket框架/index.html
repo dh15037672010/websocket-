@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    哈哈
+    <!-- <form name="myform">
+        <input type="text"  id="input" placeholder="输入你要发送的内容" value="">
+        <button onclick="send()">button</button>
+    </form> -->
+    <div></div>
+
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script >
+    // 连接socket服务。参数：服务器地址
+    var socket = io('http://localhost:3000')
+    // socket.on('send',data =>{
+        // console.log(data)
+    // })
+    socket.on('stoc',e => {
+        console.log(e)
+        var div = document.querySelector("div")
+        // JSON.Stringify(e)把object可视化成字符串
+        div.innerText = JSON.stringify(e)
+    })
+    socket.emit('login',{name:'dinhao'})
+    // function send(){
+    //     var msg = document.getElementById('input').value;
+    //     socket.emit('ctos',msg)
+    //     console.log(msg)
+    // }
+</script>
+</html>

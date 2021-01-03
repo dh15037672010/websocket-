@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+<body>
+    <!-- 输入内容 -->
+    <input type="text" placeholder="输入你的内容">
+
+    <button>发送请求</button>
+    <!-- 用来显示从websocket服务器拿到的结果 -->
+    <div> 
+        
+    </div>
+</body>
+<script>
+    var input = document.querySelector('input');
+    var div = document.querySelector('div')
+
+    var button = document.querySelector('button')
+    // 演示wbsocket在浏览器如何使用
+    //H5已经直接提供了WebSocket的API
+    // 参数：websocket的服务地址。也就是服务器
+    var socket = new WebSocket('ws:/localhost:3000');
+
+
+    // open表示当和Websocket成功连接时触发
+    socket.addEventListener('open',function(){
+        var dv = document.createElement('div')
+        dv.innerText = '连接成功'
+        div.appendChild(dv)
+    })
+
+    // 主动给WebSocket服务发送消息
+    button.addEventListener('click',function(){
+        var value = input.value;
+        socket.send(value)
+    })
+
+    // 客户端接收websocket服务的数据,e是传递来的参数
+    socket.addEventListener('message',function(e){
+        console.log(e)
+        var ds = JSON.parse(e.data)
+        var dv = document.createElement('div')
+        dv.innerText= ds.message+'---------'+ds.time
+        if(ds.type === 0){dv.style.color = 'green'
+        }else if(ds.type ===1){
+            dv.style.color = 'red'
+        }else{
+            dv.style.color = 'black'
+        }
+        div.appendChild(dv)
+    })
+
+    // e=客户端和websocket断开连接时
+    socket.addEventListener('close',function(){
+        var dv = document.createElement('div')
+        dv.innerText = "断开连接了"
+        div.appendChild(dv)
+    })
+</script>
+<style>
+    /* div {
+        width: 200px;
+        height: 200px;
+        border: 20px solid black;
+    } */
+</style>
+</html>
